@@ -5,6 +5,10 @@
 #include <string>
 #include <QLabel>
 #include <QTime>
+#include <QPainter>
+#include <QColor>
+#include <QPen>
+
 
 Clock::Clock(QWidget *pwgt)
     : QLabel(pwgt)
@@ -17,6 +21,7 @@ Clock::Clock(QWidget *pwgt)
     , m_ptPict(975,3)   
     , m_sizePict(20,20)
     , m_DataTimeForm("dd/MM/yyyy hh:mm:ss")
+    , col(Qt::yellow)
 {
     QTimer* ptimer = new QTimer(this);
     connect(ptimer,SIGNAL(timeout()),SLOT(slotUpdateDateTime()));
@@ -48,14 +53,27 @@ void Clock::slotUpdateDateTime()
     }
 }
 
-bool Clock::isDataReceived() const
+void Clock::paintEvent(QPaintEvent* paev)
+{
+    QPainter painter(this);
+    painter.setRenderHint(QPainter::Antialiasing,true);
+    painter.setPen(Qt::NoPen);
+    painter.setBrush(col);
+    painter.drawEllipse(QRect(950,3,20,20));
+}
+
+bool Clock::isDataReceived()
 {
     bool bRet = false;
+    col = Qt::green;
     if(!m_timeReceived.isNull())
     {
         int iDelta_sec = m_timeReceived.secsTo(QTime::currentTime());
         if( iDelta_sec < 5 )
+        {
             bRet = true;
+            col = Qt::yellow;
+        }
     }
     return bRet;
 }
@@ -70,7 +88,6 @@ void Clock::mouseMoveEvent(QMouseEvent *pe)
 {
     if (pe->buttons() != Qt::NoButton)
     {
-        //setText("<H2><LEFT>" + QString::number(l.x()) + ", " + QString::number(l.y()) + " [] "+ QString::number(pe->globalPos().x()) + ", " + QString::number(pe->globalPos().y()) + "</LEFT></H2>");
         move(pe->globalPos().x()-xCoord,pe->globalPos().y()-yCoord);
     }
 }

@@ -26,13 +26,16 @@ public:
     QString m_DataTimeForm;
     int     xCoord;
     int     yCoord;
+    QColor  col;
+
 
     Clock(QWidget* pwgt = 0);
     ~Clock();
 
     void mousePressEvent(QMouseEvent* pe);
     void mouseMoveEvent(QMouseEvent* pe);
-    bool isDataReceived() const;
+    bool isDataReceived();
+    void paintEvent(QPaintEvent* paev);
 
 public slots:
     void slotUpdateDateTime();
