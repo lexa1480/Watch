@@ -9,6 +9,17 @@
 #include <QTime>
 #include <QTimer>
 
+class Circle : public QWidget
+{
+    Q_OBJECT
+public:
+    QColor brushColor;
+    Circle(QWidget *parent = 0);
+    ~Circle();
+protected:
+    void paintEvent(QPaintEvent *);
+
+};
 
 class Clock : public QLabel
 {
@@ -24,18 +35,22 @@ public:
     QPoint  m_ptPict;
     QSize   m_sizePict;
     QString m_DataTimeForm;
-    int     xCoord;
-    int     yCoord;
-    QColor  col;
+    QString m_strPath;
+    int     m_xCoord;
+    int     m_yCoord;
+    Circle  m_yelCirc;
+    Circle  m_greCirc;
 
+    const QString c_szFileNameYellow = "yellow.png";
+    const QString c_szFileNameGreen = "green.png";
 
     Clock(QWidget* pwgt = 0);
     ~Clock();
 
-    void mousePressEvent(QMouseEvent* pe);
-    void mouseMoveEvent(QMouseEvent* pe);
-    bool isDataReceived();
-    void paintEvent(QPaintEvent* paev);
+    void   mousePressEvent(QMouseEvent* pe);
+    void   mouseMoveEvent(QMouseEvent* pe);
+    bool   isDataReceived() const;
+
 
 public slots:
     void slotUpdateDateTime();
