@@ -9,95 +9,57 @@
 #include <QColor>
 #include <QPen>
 
+#include <iostream>
 
 Clock::Clock(QWidget *pwgt)
     : QLabel(pwgt)
-    , m_bDataReceived(false)
-    , m_timeReceived(QTime::currentTime())
-    , m_pictY(this)
-    , m_pictG(this)
-    , m_strPath("../Watch")
-    , m_yellow("../Watch/yellow.png")
-    , m_green("../Watch/green.png")
-    , m_ptPict(975,3)   
+    , m_ptPict(975,3)
     , m_sizePict(20,20)
-    , m_DataTimeForm("dd/MM/yyyy hh:mm:ss")
     , m_yelCirc(this)
     , m_greCirc(this)
-
+    , m_redCirc(this)
+    , intervalTime(60)
 {
-    QTimer* ptimer = new QTimer(this);
-    connect(ptimer,SIGNAL(timeout()),SLOT(slotUpdateDateTime()));
-    ptimer->start(500);
-
-    slotUpdateDateTime();
-}
-Clock::~Clock()
-{}
-
-void Clock::slotUpdateDateTime()
-{
-    QString str = QDateTime::currentDateTime().toString(m_DataTimeForm);
-    setText("<H2><LEFT>" + str + "</LEFT></H2>");
-
     m_yelCirc.brushColor = Qt::yellow;
     m_greCirc.brushColor = Qt::green;
+    m_redCirc.brushColor = Qt::red;
     m_yelCirc.move(m_ptPict);
     m_greCirc.move(m_ptPict);
-    m_pictY.move(m_ptPict);
-    m_pictG.move(m_ptPict);
-
-    if (m_bDataReceived == isDataReceived())
-    {
-        if (m_green.isNull())
-        {
-            m_pictG.setVisible(false);
-            m_pictY.setVisible(false);
-            m_yelCirc.setVisible(false);
-            m_greCirc.setVisible(true);
-        }else
-        {
-            m_yelCirc.setVisible(false);
-            m_greCirc.setVisible(false);
-            m_pictY.setVisible(false);
-            m_pictG.setPixmap(m_green.scaled(m_sizePict));
-            m_pictG.setVisible(true);
-        }
-    }else
-    {
-        if (m_yellow.isNull())
-        {
-            m_pictG.setVisible(false);
-            m_pictY.setVisible(false);
-            m_yelCirc.setVisible(true);
-            m_greCirc.setVisible(false);
-        }else
-        {
-            m_yelCirc.setVisible(false);
-            m_greCirc.setVisible(false);
-            m_pictY.setPixmap(m_yellow.scaled(m_sizePict));
-            m_pictG.setVisible(false);
-            m_pictY.setVisible(true);
-
-        }
-
-    }
+    m_redCirc.move(m_ptPict);
+    QTimer* ptimer = new QTimer(this);
+    connect(ptimer,SIGNAL(timeout()),SLOT(slotCheckData()));
+    ptimer->start(5000);
 }
 
-
-
-bool Clock::isDataReceived() const
+Clock::~Clock()
 {
-    bool bRet = false;
-    if(!m_timeReceived.isNull())
+
+}
+
+void Clock::slotCheckData(){
+    m_yelCirc.setVisible(false);
+    m_greCirc.setVisible(false);
+    m_redCirc.setVisible(true);
+}
+
+void Clock::slotUpdateDateTime(QString time)
+{
+    setText("<H2><LEFT>" + time + "</LEFT></H2>");
+
+    QTime realTime = QTime::fromString(time, "hh:mm:ss:zzz");
+
+    if(realTime.secsTo(QTime::currentTime()) < intervalTime)
     {
-        int iDelta_sec = m_timeReceived.secsTo(QTime::currentTime());
-        if( iDelta_sec < 5 )
-        {
-            bRet = true;         
-        }
+        m_yelCirc.setVisible(false);
+        m_greCirc.setVisible(true);
+        m_redCirc.setVisible(false);
     }
-    return bRet;
+    else
+    {
+        m_yelCirc.setVisible(true);
+        m_greCirc.setVisible(false);
+        m_redCirc.setVisible(false);
+    }
 }
 
 void Clock::mousePressEvent(QMouseEvent *pe)

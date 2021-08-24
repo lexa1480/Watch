@@ -26,33 +26,23 @@ class Clock : public QLabel
     Q_OBJECT
 
 public:
-    bool    m_bDataReceived;
-    QTime   m_timeReceived;
-    QLabel  m_pictY;
-    QLabel  m_pictG;
-    QPixmap m_yellow;
-    QPixmap m_green;
     QPoint  m_ptPict;
     QSize   m_sizePict;
-    QString m_DataTimeForm;
-    QString m_strPath;
     int     m_xCoord;
     int     m_yCoord;
     Circle  m_yelCirc;
     Circle  m_greCirc;
-
-    const QString c_szFileNameYellow = "yellow.png";
-    const QString c_szFileNameGreen = "green.png";
+    Circle  m_redCirc;
+    int intervalTime;
 
     Clock(QWidget* pwgt = 0);
     ~Clock();
 
     void   mousePressEvent(QMouseEvent* pe);
     void   mouseMoveEvent(QMouseEvent* pe);
-    bool   isDataReceived() const;
-
 
 public slots:
-    void slotUpdateDateTime();
+    void slotUpdateDateTime(QString a);
+    void slotCheckData();
 };
 #endif

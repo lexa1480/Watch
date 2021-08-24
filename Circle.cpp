@@ -4,7 +4,6 @@
 #include <QColor>
 
 
-
 Circle::Circle(QWidget *parent) : QWidget(parent)
 {
 
