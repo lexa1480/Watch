@@ -1,25 +1,14 @@
 #ifndef CLOCK_H
 #define CLOCK_H
 #pragma once
-#include <QWidget>
 #include <QMouseEvent>
 #include <QPixmap>
 #include <string>
 #include <QLabel>
 #include <QTime>
 #include <QTimer>
+#include <Circle.h>
 
-class Circle : public QWidget
-{
-    Q_OBJECT
-public:
-    QColor brushColor;
-    Circle(QWidget *parent = 0);
-    ~Circle();
-protected:
-    void paintEvent(QPaintEvent *);
-
-};
 
 class Clock : public QLabel
 {

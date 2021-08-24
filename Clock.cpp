@@ -1,13 +1,8 @@
 #include "Clock.h"
 #include <QWidget>
 #include <QMouseEvent>
-#include <QPixmap>
-#include <string>
 #include <QLabel>
 #include <QTime>
-#include <QPainter>
-#include <QColor>
-#include <QPen>
 
 #include <iostream>
 

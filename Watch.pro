@@ -27,6 +27,7 @@ SOURCES += \
     main.cpp
 
 HEADERS += \
+    Circle.h \
     Clock.h \
     SendHelp.h
 
