@@ -3,6 +3,9 @@
 #include <QMouseEvent>
 #include <QLabel>
 #include <QTime>
+#include <QApplication>
+#include <QDesktopWidget>
+#include <QRect>
 
 #include <iostream>
 
@@ -73,7 +76,22 @@ void Clock::mouseMoveEvent(QMouseEvent *pe)
 {
     if (pe->buttons() != Qt::NoButton)
     {
-        move(pe->globalPos().x()-m_xCoord,pe->globalPos().y()-m_yCoord);
+        int x = pe->globalPos().x()-m_xCoord;
+        int y = pe->globalPos().y()-m_yCoord;
+        QRect screen = QApplication::desktop()->availableGeometry(0);
+        if(x < 0){
+            x = 0;
+        }
+        if(y < 0){
+            y = 0;
+        }
+        if(x > (screen.width() - 125)){
+            x = screen.width() - 125;
+        }
+        if(y > (screen.height() - 26)){
+            y = screen.height() - 26;
+        }
+        move(x,y);
     }
 }
 
