@@ -78,18 +78,22 @@ void Clock::mouseMoveEvent(QMouseEvent *pe)
     {
         int x = pe->globalPos().x()-m_xCoord;
         int y = pe->globalPos().y()-m_yCoord;
-        QRect screen = QApplication::desktop()->availableGeometry(0);
-        if(x < 0){
+        QRect screenSize = QApplication::desktop()->availableGeometry(0);
+        if(x < 0)
+        {
             x = 0;
         }
-        if(y < 0){
+        if(y < 0)
+        {
             y = 0;
         }
-        if(x > (screen.width() - 125)){
-            x = screen.width() - 125;
+        if(x > (screenSize.width() - 125))
+        {
+            x = screenSize.width() - 125;
         }
-        if(y > (screen.height() - 26)){
-            y = screen.height() - 26;
+        if(y > (screenSize.height() - 26))
+        {
+            y = screenSize.height() - 26;
         }
         move(x,y);
     }
