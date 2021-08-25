@@ -13,7 +13,7 @@ public:
     {
         std::string sPacket((const char*)(pBufIn));
         sPacket = sPacket.substr(7, 10);
-        sPacket = sPacket.substr(0, 2) + ":" + sPacket.substr(2, 2) + ":" + sPacket.substr(4, 2) + ":" + sPacket.substr(7, 3);
+        sPacket = sPacket.substr(0, 2) + ":" + sPacket.substr(2, 2) + ":" + sPacket.substr(4, 2);
         QString result = sPacket.c_str();
 
 
@@ -38,8 +38,14 @@ int main(int argc, char *argv[])
     QApplication app(argc, argv);
 
     Clock clock;
+    clock.setStyleSheet("QLabel {"
+                            "border-style: solid;"
+                            "border-width: 1px;"
+                            "border-color: black; "
+                        "}");
+    clock.setAlignment(Qt::AlignRight);
     clock.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
-    clock.resize(1000,26);
+    clock.resize(125,26);
     clock.show();
 
     ip_st_x::CStPlugMain m_plugIpSt;

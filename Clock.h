@@ -23,6 +23,7 @@ public:
     Circle  m_greCirc;
     Circle  m_redCirc;
     int intervalTime;
+    bool seter;
 
     Clock(QWidget* pwgt = 0);
     ~Clock();

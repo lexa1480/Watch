@@ -8,12 +8,13 @@
 
 Clock::Clock(QWidget *pwgt)
     : QLabel(pwgt)
-    , m_ptPict(975,3)
+    , m_ptPict(7.5,3)
     , m_sizePict(20,20)
     , m_yelCirc(this)
     , m_greCirc(this)
     , m_redCirc(this)
     , intervalTime(60)
+    , seter(true)
 {
     m_yelCirc.brushColor = Qt::yellow;
     m_greCirc.brushColor = Qt::green;
@@ -23,7 +24,7 @@ Clock::Clock(QWidget *pwgt)
     m_redCirc.move(m_ptPict);
     QTimer* ptimer = new QTimer(this);
     connect(ptimer,SIGNAL(timeout()),SLOT(slotCheckData()));
-    ptimer->start(5000);
+    ptimer->start(1000);
 }
 
 Clock::~Clock()
@@ -32,16 +33,20 @@ Clock::~Clock()
 }
 
 void Clock::slotCheckData(){
-    m_yelCirc.setVisible(false);
-    m_greCirc.setVisible(false);
-    m_redCirc.setVisible(true);
+    if(seter)
+    {
+        m_yelCirc.setVisible(false);
+        m_greCirc.setVisible(false);
+        m_redCirc.setVisible(true);
+    }
+    seter = true;
 }
 
 void Clock::slotUpdateDateTime(QString time)
 {
     setText("<H2><LEFT>" + time + "</LEFT></H2>");
 
-    QTime realTime = QTime::fromString(time, "hh:mm:ss:zzz");
+    QTime realTime = QTime::fromString(time, "hh:mm:ss");
 
     if(realTime.secsTo(QTime::currentTime()) < intervalTime)
     {
@@ -55,6 +60,7 @@ void Clock::slotUpdateDateTime(QString time)
         m_greCirc.setVisible(false);
         m_redCirc.setVisible(false);
     }
+    seter = false;
 }
 
 void Clock::mousePressEvent(QMouseEvent *pe)
