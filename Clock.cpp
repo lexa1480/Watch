@@ -55,10 +55,12 @@ void Clock::slotRedSignal()
     m_greCirc.setVisible(false);
     m_redCirc.setVisible(true);
     m_grayCirc.setVisible(false);
+    this->setStyleSheet("color: rgb(105, 105, 105)");
 }
 
 void Clock::slotUpdateDateTime(QString time)
 {
+    this->setStyleSheet("color: rgb(0, 0, 0)");
     setText("<H2><LEFT>" + time + "</LEFT></H2>");
 
     QTime realTime = QTime::fromString(time, "hh:mm:ss");
