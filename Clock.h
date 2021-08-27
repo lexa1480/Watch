@@ -1,6 +1,6 @@
 #ifndef CLOCK_H
 #define CLOCK_H
-#pragma once
+
 #include <QMouseEvent>
 #include <QPixmap>
 #include <string>
@@ -8,6 +8,7 @@
 #include <QTime>
 #include <QTimer>
 #include <Circle.h>
+#include "CoordXml.h"
 
 
 class Clock : public QLabel
@@ -23,7 +24,9 @@ public:
     Circle  m_greCirc;
     Circle  m_redCirc;
     int intervalTime;
-    bool seter;
+    bool bsignal;
+    QTimer saveTimer;
+    CoordXml coordXml;
 
     Clock(QWidget* pwgt = 0);
     ~Clock();
@@ -33,6 +36,7 @@ public:
 
 public slots:
     void slotUpdateDateTime(QString a);
-    void slotCheckData();
+    void slotCheckSignal();
+    void slotSaveCoord();
 };
 #endif

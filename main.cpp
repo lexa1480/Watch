@@ -24,7 +24,7 @@ public:
     Clock *clock;
     SendHelp *sendHelp;
 
-    CStClientProcessor(SendHelp &sendHlp,Clock &clk){
+    CStClientProcessor(SendHelp &sendHlp, Clock &clk){
         sendHelp = &sendHlp;
         clock = &clk;
     }
@@ -38,14 +38,6 @@ int main(int argc, char *argv[])
     QApplication app(argc, argv);
 
     Clock clock;
-    clock.setStyleSheet("QLabel {"
-                            "border-style: solid;"
-                            "border-width: 1px;"
-                            "border-color: black; "
-                        "}");
-    clock.setAlignment(Qt::AlignRight);
-    clock.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
-    clock.resize(125,26);
     clock.show();
 
     ip_st_x::CStPlugMain m_plugIpSt;
@@ -84,6 +76,7 @@ int main(int argc, char *argv[])
     {
         std::cout << "Error: " << str << std::endl;
     }
+
 
     return app.exec();
 }

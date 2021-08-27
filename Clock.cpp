@@ -9,6 +9,11 @@
 
 #include <iostream>
 
+int Fun1(){
+    //LOAD
+    return 1000;
+}
+
 Clock::Clock(QWidget *pwgt)
     : QLabel(pwgt)
     , m_ptPict(7.5,3)
@@ -17,7 +22,8 @@ Clock::Clock(QWidget *pwgt)
     , m_greCirc(this)
     , m_redCirc(this)
     , intervalTime(60)
-    , seter(true)
+    , bsignal(true)
+    , saveTimer(this)
 {
     m_yelCirc.brushColor = Qt::yellow;
     m_greCirc.brushColor = Qt::green;
@@ -25,9 +31,24 @@ Clock::Clock(QWidget *pwgt)
     m_yelCirc.move(m_ptPict);
     m_greCirc.move(m_ptPict);
     m_redCirc.move(m_ptPict);
+
     QTimer* ptimer = new QTimer(this);
-    connect(ptimer,SIGNAL(timeout()),SLOT(slotCheckData()));
+    connect(ptimer, SIGNAL(timeout()), SLOT(slotCheckSignal()));
     ptimer->start(1000);
+
+    connect(&saveTimer, SIGNAL(timeout()), SLOT(slotSaveCoord()));
+
+    coordXml.Init();
+    coordXml.RegRead();
+
+    this->setGeometry(coordXml.getX(), coordXml.getY(), 125, 26);
+    this->setStyleSheet("QLabel {"
+                            "border-style: solid;"
+                            "border-width: 1px;"
+                            "border-color: black; "
+                        "}");
+    this->setAlignment(Qt::AlignRight);
+    this->setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
 }
 
 Clock::~Clock()
@@ -35,14 +56,15 @@ Clock::~Clock()
 
 }
 
-void Clock::slotCheckData(){
-    if(seter)
+void Clock::slotCheckSignal()
+{
+    if(bsignal)
     {
         m_yelCirc.setVisible(false);
         m_greCirc.setVisible(false);
         m_redCirc.setVisible(true);
     }
-    seter = true;
+    bsignal = true;
 }
 
 void Clock::slotUpdateDateTime(QString time)
@@ -63,7 +85,7 @@ void Clock::slotUpdateDateTime(QString time)
         m_greCirc.setVisible(false);
         m_redCirc.setVisible(false);
     }
-    seter = false;
+    bsignal = false;
 }
 
 void Clock::mousePressEvent(QMouseEvent *pe)
@@ -97,8 +119,18 @@ void Clock::mouseMoveEvent(QMouseEvent *pe)
         }
         move(x,y);
     }
+
+    saveTimer.start(5000);
 }
 
+void Clock::slotSaveCoord()
+{
+    saveTimer.stop();
+    coordXml.setX(this->x());
+    coordXml.setY(this->y());
+    coordXml.RegWrite();
+
+}
 
 
 
