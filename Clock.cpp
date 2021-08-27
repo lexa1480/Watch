@@ -28,8 +28,6 @@ Clock::Clock(QWidget *pwgt)
     m_redCirc.move(m_ptPict);
     m_grayCirc.move(m_ptPict);
 
-    usleep(5000000);
-
     connect(&redLampTimer, SIGNAL(timeout()), SLOT(slotRedSignal()));
     connect(&saveTimer, SIGNAL(timeout()), SLOT(slotSaveCoord()));
 
@@ -56,6 +54,7 @@ void Clock::slotRedSignal()
     m_yelCirc.setVisible(false);
     m_greCirc.setVisible(false);
     m_redCirc.setVisible(true);
+    m_grayCirc.setVisible(false);
 }
 
 void Clock::slotUpdateDateTime(QString time)
@@ -69,12 +68,14 @@ void Clock::slotUpdateDateTime(QString time)
         m_yelCirc.setVisible(false);
         m_greCirc.setVisible(true);
         m_redCirc.setVisible(false);
+        m_grayCirc.setVisible(false);
     }
     else
     {
         m_yelCirc.setVisible(true);
         m_greCirc.setVisible(false);
         m_redCirc.setVisible(false);
+        m_grayCirc.setVisible(false);
     }
     redLampTimer.start(2000);
 }
