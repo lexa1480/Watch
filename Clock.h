@@ -23,8 +23,9 @@ public:
     Circle  m_yelCirc;
     Circle  m_greCirc;
     Circle  m_redCirc;
+    Circle  m_grayCirc;
     int intervalTime;
-    bool bsignal;
+    QTimer redLampTimer;
     QTimer saveTimer;
     CoordXml coordXml;
 
@@ -36,7 +37,7 @@ public:
 
 public slots:
     void slotUpdateDateTime(QString a);
-    void slotCheckSignal();
+    void slotRedSignal();
     void slotSaveCoord();
 };
 #endif

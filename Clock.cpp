@@ -14,21 +14,23 @@ Clock::Clock(QWidget *pwgt)
     , m_yelCirc(this)
     , m_greCirc(this)
     , m_redCirc(this)
+    , m_grayCirc(this)
     , intervalTime(60)
-    , bsignal(true)
+    , redLampTimer(this)
     , saveTimer(this)
 {
     m_yelCirc.brushColor = Qt::yellow;
     m_greCirc.brushColor = Qt::green;
     m_redCirc.brushColor = Qt::red;
+    m_grayCirc.brushColor = Qt::gray;
     m_yelCirc.move(m_ptPict);
     m_greCirc.move(m_ptPict);
     m_redCirc.move(m_ptPict);
+    m_grayCirc.move(m_ptPict);
 
-    QTimer* ptimer = new QTimer(this);
-    connect(ptimer, SIGNAL(timeout()), SLOT(slotCheckSignal()));
-    ptimer->start(1000);
+    usleep(5000000);
 
+    connect(&redLampTimer, SIGNAL(timeout()), SLOT(slotRedSignal()));
     connect(&saveTimer, SIGNAL(timeout()), SLOT(slotSaveCoord()));
 
     coordXml.Init();
@@ -41,7 +43,7 @@ Clock::Clock(QWidget *pwgt)
                             "border-color: black; "
                         "}");
     this->setAlignment(Qt::AlignRight);
-    this->setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
+    this->setWindowFlags(Qt::Window | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint );
 }
 
 Clock::~Clock()
@@ -49,15 +51,11 @@ Clock::~Clock()
 
 }
 
-void Clock::slotCheckSignal()
+void Clock::slotRedSignal()
 {
-    if(bsignal)
-    {
-        m_yelCirc.setVisible(false);
-        m_greCirc.setVisible(false);
-        m_redCirc.setVisible(true);
-    }
-    bsignal = true;
+    m_yelCirc.setVisible(false);
+    m_greCirc.setVisible(false);
+    m_redCirc.setVisible(true);
 }
 
 void Clock::slotUpdateDateTime(QString time)
@@ -78,7 +76,7 @@ void Clock::slotUpdateDateTime(QString time)
         m_greCirc.setVisible(false);
         m_redCirc.setVisible(false);
     }
-    bsignal = false;
+    redLampTimer.start(2000);
 }
 
 void Clock::mousePressEvent(QMouseEvent *pe)
@@ -122,7 +120,6 @@ void Clock::slotSaveCoord()
     coordXml.setX(this->x());
     coordXml.setY(this->y());
     coordXml.RegWrite();
-
 }
 
 
