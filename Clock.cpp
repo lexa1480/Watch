@@ -7,17 +7,10 @@
 #include <QDesktopWidget>
 #include <QRect>
 
-#include <iostream>
-
-int Fun1(){
-    //LOAD
-    return 1000;
-}
-
 Clock::Clock(QWidget *pwgt)
     : QLabel(pwgt)
-    , m_ptPict(7.5,3)
-    , m_sizePict(20,20)
+    , m_ptPict(7.5, 3)
+    , m_sizePict(20, 20)
     , m_yelCirc(this)
     , m_greCirc(this)
     , m_redCirc(this)
