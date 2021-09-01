@@ -17,7 +17,6 @@ class Clock : public QLabel
 
 public:
     QPoint  m_ptPict;
-    QSize   m_sizePict;
     int     m_xCoord;
     int     m_yCoord;
     Circle  m_yelCirc;

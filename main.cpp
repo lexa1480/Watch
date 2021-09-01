@@ -6,6 +6,8 @@
 #include "SendHelp.h"
 #include "Clock.h"
 
+#include <QTextCodec>
+
 class CStClientProcessor : public ip_st_x::CStClientSubscriber
 {
 public:
@@ -34,6 +36,9 @@ public:
 
 int main(int argc, char *argv[])
 {
+    QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
+    QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
+    QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
     std::setlocale(LC_ALL, "");
     QApplication app(argc, argv);
 
